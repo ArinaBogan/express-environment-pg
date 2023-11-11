@@ -37,4 +37,17 @@ async function deleteEnvironmentDB(id) {
     return result;
 }
 
-module.exports = { getAllEnvironmentDB, getAllEnvironmentByIdDB, createEnvironmentDB, updateEnvironmentByIdDB, deleteEnvironmentDB }
+async function patchEnvironmentDB(id) {
+    const client = await pool.connect();
+    const sql = '';
+    const result = (await client.query(sql, [id])).rows;
+    return result;
+}
+module.exports = {
+    getAllEnvironmentDB,
+    getAllEnvironmentByIdDB,
+    createEnvironmentDB,
+    updateEnvironmentByIdDB,
+    deleteEnvironmentDB,
+    patchEnvironmentDB
+};

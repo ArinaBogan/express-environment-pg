@@ -1,4 +1,9 @@
-const { getAllEnvironmentDB, getAllEnvironmentByIdDB, createEnvironmentDB, updateEnvironmentByIdDB, deleteEnvironmentDB } = require('../repository/environment.repository')
+const { getAllEnvironmentDB,
+    getAllEnvironmentByIdDB,
+    createEnvironmentDB,
+    updateEnvironmentByIdDB,
+    deleteEnvironmentDB,
+    patchEnvironmentDB } = require('../repository/environment.repository')
 
 async function getAllEnvironment() {
     const data = await getAllEnvironmentDB();
@@ -28,4 +33,17 @@ async function deleteEnvironment(id) {
     return data;
 };
 
-module.exports = { getAllEnvironment, getAllEnvironmentById, createEnvironment, updateEnvironmentById, deleteEnvironment };
+async function patchEnvironment(id) {
+    const data = await patchEnvironmentDB(id);
+    if (!data.length) throw new Error('this id is not found');
+    return data;
+};
+
+module.exports = {
+    getAllEnvironment,
+    getAllEnvironmentById,
+    createEnvironment,
+    updateEnvironmentById,
+    deleteEnvironment,
+    patchEnvironment
+};

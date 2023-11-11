@@ -1,19 +1,25 @@
 const express = require('express');
-const { getAllEnvironment, getAllEnvironmentById, createEnvironment, updateEnvironmentById, deleteEnvironment } = require('../service/environment.service');
+const { getAllEnvironment,
+    getAllEnvironmentById,
+    createEnvironment,
+    updateEnvironmentById,
+    deleteEnvironment,
+    patchEnvironment } = require('../service/environment.service');
+const { isValidBody, isValidEnvironmentId } = require('../helper/validation');
 const route = express.Router();
 
-route.get('/', async (req, res) => {
+route.get('/', isValidBody, async (req, res) => {
     const data = await getAllEnvironment();
     res.send(data);
 });
 
-route.get('/:id', async (req, res) => {
+route.get('/:id', isValidEnvironmentId, async (req, res) => {
     const { id } = req.params;
     const data = await getAllEnvironmentById(id);
     res.send(data);
 });
 
-route.post('/', async (req, res) => {
+route.post('/',isValidBody,  async (req, res) => {
     try {
         const { label, category, priority } = req.body;
         const data = await createEnvironment(label, category, priority)
@@ -23,7 +29,7 @@ route.post('/', async (req, res) => {
     }
 });
 
-route.put('/:id', async (req, res) => {
+route.put('/:id', isValidBody, isValidEnvironmentId, async (req, res) => {
     try {
         const { id } = req.params;
         const { label, category, priority } = req.body;
@@ -34,7 +40,7 @@ route.put('/:id', async (req, res) => {
     }
 });
 
-route.delete('/:id', async (req, res) => {
+route.delete('/:id', isValidEnvironmentId, async (req, res) => {
     try {
         const { id } = req.params;
         const data = await deleteEnvironment(id)
@@ -44,4 +50,13 @@ route.delete('/:id', async (req, res) => {
     }
 });
 
+route.patch('/:id', isValidEnvironmentId, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = await patchEnvironment(id);
+        res.send(data)
+    } catch (error) {
+        res.send(error.message);
+    }
+});
 module.exports = route;
