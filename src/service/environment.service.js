@@ -33,8 +33,8 @@ async function deleteEnvironment(id) {
     return data;
 };
 
-async function patchEnvironment(id) {
-    const data = await patchEnvironmentDB(id);
+async function patchEnvironment(id,clientObj) {
+    const data = await patchEnvironmentDB(id,clientObj);
     if (!data.length) throw new Error('this id is not found');
     return data;
 };

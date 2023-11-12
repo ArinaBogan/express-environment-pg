@@ -37,12 +37,18 @@ async function deleteEnvironmentDB(id) {
     return result;
 }
 
-async function patchEnvironmentDB(id) {
+async function patchEnvironmentDB(id, clientObj) {
     const client = await pool.connect();
-    const sql = '';
-    const result = (await client.query(sql, [id])).rows;
+    const sql = 'select*from users where id=$1';
+    const oldObj = (await client.query(sql, [id])).rows;
+    const newObj = { ...oldObj[0], ...clientObj };
+
+    const sqlUpdate =`update environment 
+    set label = $2,category = $3, priority=$4 where id=$1 returning *`;
+    const result = (await client.query(sqlUpdate, [id, newObj.label, newObj.category, newObj.priority])).rows;
     return result;
 }
+
 module.exports = {
     getAllEnvironmentDB,
     getAllEnvironmentByIdDB,

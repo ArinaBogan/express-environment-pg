@@ -19,7 +19,7 @@ route.get('/:id', isValidEnvironmentId, async (req, res) => {
     res.send(data);
 });
 
-route.post('/',isValidBody,  async (req, res) => {
+route.post('/', isValidBody, async (req, res) => {
     try {
         const { label, category, priority } = req.body;
         const data = await createEnvironment(label, category, priority)
@@ -53,7 +53,8 @@ route.delete('/:id', isValidEnvironmentId, async (req, res) => {
 route.patch('/:id', isValidEnvironmentId, async (req, res) => {
     try {
         const { id } = req.params;
-        const data = await patchEnvironment(id);
+        const clientObj = req.body;
+        const data = await patchEnvironment(id,clientObj);
         res.send(data)
     } catch (error) {
         res.send(error.message);
